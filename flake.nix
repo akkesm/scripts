@@ -29,13 +29,27 @@
             install -D $src $out/bin/${pname}
           '';
         };
+
+        mktk01xml = final.stdenv.mkDerivation rec {
+          pname = "mktk01xml";
+          version = "0.1.0";
+
+          src = ./maketk01xml.sh;
+
+          phases = [ "installPhase" ];
+
+          installPhase = ''
+            install -D $src $out/bin/${pname}
+          '';
+        };
       };
 
       packages = forAllSystems (system: rec {
         inherit (nixpkgsFor."${system}")
-          format-tables;
+          format-tables
+          mktk01xml;
 
-        default = format-tables;
+        default = mktk01xml;
       });
 
       checks = forAllSystems (system: {
